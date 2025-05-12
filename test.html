@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>天宫空间站各舱体概览</title>
+  <style>
+    /* 基本页面布局设置 */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: url('bg.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+
+    /* 主容器设置 */
+    .container {
+      position: relative;
+      width: 1280px;
+      height: 720px;
+      overflow: hidden;
+      transform: translateX(-5%);
+    }
+
+    /* 舱段模块基本样式 */
+    .module {
+      position: absolute;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    /* 每个模块的图片样式 */
+    .module img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 高亮图片默认隐藏 */
+    .module .highlight {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    /* 悬停时显示高亮图片 */
+    .module:hover .highlight {
+      opacity: 1;
+      animation: flash 0.6s ease;
+    }
+
+    /* 闪烁动画效果 */
+    @keyframes flash {
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 1; }
+    }
+
+    /* 各个模块的位置和大小 - 恢复原始位置和大小 */
+    .module.wentian {
+      top: calc(350px / 2);
+      left: calc(990px / 2);
+      width: calc(614px * 1.1);
+      height: calc(1251px * 1.1);
+      transform: translate(-50%, -50%);
+    }
+
+    .module.shenzhou {
+      top: calc(820px / 2);
+      left: calc(1300px / 2);
+      width: calc(360px * 1.1);
+      height: calc(734px * 1.1);
+      transform: translate(-50%, -50%);
+    }
+
+    .module.tianhe {
+      top: calc(500px / 2);
+      left: calc(1600px / 2);
+      width: calc(402px * 1);
+      height: calc(720px * 1);
+      transform: translate(-50%, -50%);
+    }
+
+    .module.tianzhou {
+      top: calc(260px / 2);
+      left: calc(2050px / 2);
+      width: calc(196px * 1.1);
+      height: calc(376px * 1.1);
+      transform: translate(-50%, -50%);
+    }
+
+    .module.mengtian {
+      top: calc(950px / 2);
+      left: calc(1950px / 2);
+      width: calc(949px * 0.707);
+      height: calc(1309px * 0.707);
+      transform: translate(-50%, -50%);
+    }
+
+    /* 热点区域样式 */
+    .hotspot {
+      position: absolute;
+      cursor: pointer;
+      z-index: 5;
+      background-color: transparent;
+      border: none;
+    }
+
+    /* 各热点区域位置和大小 - 在舱段中心位置，大小为原图的1/4 */
+    .hotspot.wentian {
+      top: calc(350px / 2);
+      left: calc(990px / 2);
+      width: calc((614px * 1.1) / 4);
+      height: calc((1251px * 1.1) / 4);
+      transform: translate(-50%, -50%);
+    }
+
+    .hotspot.shenzhou {
+      top: calc(820px / 2);
+      left: calc(1300px / 2);
+      width: calc((360px * 1.1) / 4);
+      height: calc((734px * 1.1) / 4);
+      transform: translate(-50%, -50%);
+    }
+
+    .hotspot.tianhe {
+      top: calc(500px / 2);
+      left: calc(1600px / 2);
+      width: calc((402px * 1) / 4);
+      height: calc((720px * 1) / 4);
+      transform: translate(-50%, -50%);
+    }
+
+    .hotspot.tianzhou {
+      top: calc(260px / 2);
+      left: calc(2050px / 2);
+      width: calc((196px * 1.1) / 4);
+      height: calc((376px * 1.1) / 4);
+      transform: translate(-50%, -50%);
+    }
+
+    .hotspot.mengtian {
+      top: calc(950px / 2);
+      left: calc(1950px / 2);
+      width: calc((949px * 0.707) / 4);
+      height: calc((1309px * 0.707) / 4);
+      transform: translate(-50%, -50%);
+    }
+
+    /* 提示文字样式 */
+    .instruction-text {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-size: 18px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 150, 255, 0.5);
+      border: 1px solid rgba(0, 150, 255, 0.3);
+      letter-spacing: 1px;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 15px rgba(0, 150, 255, 0.5); }
+      50% { box-shadow: 0 0 25px rgba(0, 200, 255, 0.8); }
+      100% { box-shadow: 0 0 15px rgba(0, 150, 255, 0.5); }
+    }
+
+    /* 模块介绍弹窗样式 */
+    .module-info {
+      display: none;
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 300px;
+      z-index: 10;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .module-info h3 {
+      margin-top: 0;
+      color: #00a8ff;
+    }
+
+    .module-info p {
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- 主容器 -->
+  <div class="container">
+    <!-- 天和核心舱 -->
+    <div class="module tianhe">
+      <img src="tianhe_b.png" alt="天和核心舱">
+      <img class="highlight" src="tianhe.png" alt="天和核心舱高亮">
+    </div>
+
+    <!-- 问天实验舱 -->
+    <div class="module wentian">
+      <img src="wentian_b.png" alt="问天实验舱">
+      <img class="highlight" src="wentian.png" alt="问天实验舱高亮">
+    </div>
+
+    <!-- 梦天实验舱 -->
+    <div class="module mengtian">
+      <img src="mengtian_b.png" alt="梦天实验舱">
+      <img class="highlight" src="mengtian.png" alt="梦天实验舱高亮">
+    </div>
+
+    <!-- 神舟飞船 -->
+    <div class="module shenzhou">
+      <img src="shenzhou_b.png" alt="神舟飞船">
+      <img class="highlight" src="shenzhou.png" alt="神舟飞船高亮">
+    </div>
+
+    <!-- 天舟货运飞船 -->
+    <div class="module tianzhou">
+      <img src="tianzhou_b.png" alt="天舟货运飞船">
+      <img class="highlight" src="tianzhou.png" alt="天舟货运飞船高亮">
+    </div>
+
+    <!-- 热点区域 -->
+    <div class="hotspot tianhe" onclick="window.location.href='tianhe.html'" onmouseover="showHighlight('tianhe'); showInfo('tianhe-info')" onmouseout="hideHighlight('tianhe'); hideInfo('tianhe-info')"></div>
+    <div class="hotspot wentian" onclick="window.location.href='wentian.html'" onmouseover="showHighlight('wentian'); showInfo('wentian-info')" onmouseout="hideHighlight('wentian'); hideInfo('wentian-info')"></div>
+    <div class="hotspot mengtian" onclick="window.location.href='mengtian.html'" onmouseover="showHighlight('mengtian'); showInfo('mengtian-info')" onmouseout="hideHighlight('mengtian'); hideInfo('mengtian-info')"></div>
+    <div class="hotspot shenzhou" onclick="window.location.href='shenzhou.html'" onmouseover="showHighlight('shenzhou'); showInfo('shenzhou-info')" onmouseout="hideHighlight('shenzhou'); hideInfo('shenzhou-info')"></div>
+    <div class="hotspot tianzhou" onclick="window.location.href='tianzhou.html'" onmouseover="showHighlight('tianzhou'); showInfo('tianzhou-info')" onmouseout="hideHighlight('tianzhou'); hideInfo('tianzhou-info')"></div>
+
+    <!-- 提示文字 -->
+    <div class="instruction-text">✨ 点击对应舱段进入详细探索 ✨</div>
+  </div>
+
+  <!-- 知识问答按钮 -->
+  <div style="position: absolute; top: 20px; right: 20px;">
+    <a href="quiz.html" style="background-color: #00a8ff; color: white; padding: 10px 15px; border-radius: 5px; text-decoration: none; display: inline-block; font-weight: bold;">知识问答</a>
+  </div>
+
+  <!-- 各个模块的介绍信息弹窗 -->
+  <div id="tianhe-info" class="module-info">
+    <h3>天和核心舱</h3>
+    <p>天和核心舱是中国空间站的管理和控制中心，长16.6米，最大直径4.2米，重约22.5吨。它为航天员提供生活和工作空间，配备了再生生命保障系统、航天员运动设备、科学实验柜等设施。</p>
+    <p>核心舱具有三个对接口和两个停泊口，可以与其他舱段和飞船对接，形成完整的空间站。</p>
+  </div>
+
+  <div id="wentian-info" class="module-info">
+    <h3>问天实验舱</h3>
+    <p>问天实验舱是中国空间站的第一个实验舱段，长约17.9米，最大直径4.2米，重约23吨。它主要用于支持空间科学实验，配备了多个科学实验柜和机械臂。</p>
+    <p>问天实验舱还具备备份核心舱管理和控制功能，提高了空间站的安全可靠性。它还为航天员提供了额外的睡眠区和工作区。</p>
+  </div>
+
+  <div id="mengtian-info" class="module-info">
+    <h3>梦天实验舱</h3>
+    <p>梦天实验舱是中国空间站的第二个实验舱段，长约17.9米，最大直径4.2米，重约23吨。它专注于微重力科学研究和空间应用技术实验。</p>
+    <p>梦天实验舱配备了多个科学实验柜和暴露平台，可以进行材料科学、流体物理、燃烧科学、基础物理和空间生物技术等领域的实验研究。</p>
+  </div>
+
+  <div id="shenzhou-info" class="module-info">
+    <h3>神舟飞船</h3>
+    <p>神舟飞船是中国载人航天工程的核心飞行器，由轨道舱、返回舱和推进舱组成，总长约9米，最大直径2.8米，重约8吨。</p>
+    <p>它主要用于将航天员送入太空并安全返回地球，可搭载3名航天员，具备与空间站自动交会对接的能力。神舟飞船还可以为空间站提供补给和技术支持。</p>
+  </div>
+
+  <div id="tianzhou-info" class="module-info">
+    <h3>天舟货运飞船</h3>
+    <p>天舟货运飞船是中国自主研发的货运飞船，长10.6米，最大直径3.35米，重约13.5吨。它主要用于为空间站运送补给物资、推进剂和科研设备。</p>
+    <p>天舟飞船具有自动交会对接能力，可以为空间站提供推进剂补加、轨道控制和姿态控制等功能。它还可以带回空间站的废弃物，并在返回大气层时安全销毁。</p>
+  </div>
+
+  <!-- JavaScript脚本 -->
+  <script>
+    // 显示高亮图片
+    function showHighlight(moduleClass) {
+      document.querySelector(`.module.${moduleClass} .highlight`).style.opacity = "1";
+    }
+    
+    // 隐藏高亮图片
+    function hideHighlight(moduleClass) {
+      document.querySelector(`.module.${moduleClass} .highlight`).style.opacity = "0";
+    }
+    
+    // 显示信息弹窗
+    function showInfo(infoId) {
+      const info = document.getElementById(infoId);
+      info.style.display = 'block';
+      
+      // 根据鼠标位置调整弹窗位置
+      document.addEventListener('mousemove', function(e) {
+        info.style.left = (e.clientX + 20) + 'px';
+        info.style.top = (e.clientY - 20) + 'px';
+      });
+    }
+
+    // 隐藏信息弹窗
+    function hideInfo(infoId) {
+      document.getElementById(infoId).style.display = 'none';
+    }
+  </script>
+</body>
+</html>

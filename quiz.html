@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天宫空间站 - 知识问答</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/ui/favicon.ico" type="image/x-icon">
+    <meta name="description" content="测试你对天宫空间站的了解，参与知识问答">
+    <style>
+        .quiz-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: rgba(0, 30, 60, 0.85);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 100, 255, 0.3);
+            color: #fff;
+        }
+        
+        .question {
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.3);
+            padding-bottom: 20px;
+        }
+        
+        .question h3 {
+            color: #4da6ff;
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: rgba(30, 60, 100, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            background-color: rgba(50, 100, 200, 0.4);
+        }
+        
+        .option.correct {
+            background-color: rgba(0, 200, 100, 0.4);
+        }
+        
+        .option.incorrect {
+            background-color: rgba(200, 50, 50, 0.4);
+        }
+        
+        .option input {
+            margin-right: 15px;
+        }
+        
+        .submit-btn, .next-btn {
+            background-color: #00a8ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover, .next-btn:hover {
+            background-color: #0084c8;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(0, 200, 100, 0.2);
+            border: 1px solid #00c864;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(200, 50, 50, 0.2);
+            border: 1px solid #c83232;
+        }
+        
+        .result-container {
+            text-align: center;
+            display: none;
+        }
+        
+        .result-container h2 {
+            color: #4da6ff;
+            margin-bottom: 20px;
+        }
+        
+        .score {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .certificate-btn {
+            background-color: #00a8ff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .certificate-btn:hover {
+            background-color: #0084c8;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background-color: rgba(100, 150, 255, 0.2);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: #00a8ff;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: rgba(0, 30, 60, 0.85);
+        }
+        
+        .header-nav h1 {
+            color: #fff;
+            margin: 0;
+            font-size: 24px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .nav-links a.active {
+            background-color: #00a8ff;
+        }
+        
+        body {
+            background-image: url('images/bgstar.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-nav">
+        <h1>天宫空间站 - 知识问答</h1>
+        <div class="nav-links">
+            <a href="test.html">空间站概览</a>
+            <a href="#" class="active">知识问答</a>
+        </div>
+    </div>
+    
+    <div class="quiz-container">
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div id="quizContent">
+            <div class="question" id="question1">
+                <h3>1. 天宫空间站的核心舱叫什么名字？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q1" value="A"> A. 问天核心舱
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="B"> B. 天和核心舱
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="C"> C. 梦天核心舱
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q1" value="D"> D. 神舟核心舱
+                    </label>
+                </div>
+                <div class="feedback" id="feedback1"></div>
+                <button class="submit-btn" onclick="checkAnswer(1)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(1)">下一题</button>
+            </div>
+            
+            <div class="question" id="question2" style="display: none;">
+                <h3>2. 天宫空间站实验舱有几个？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q2" value="A"> A. 1个
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="B"> B. 2个
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="C"> C. 3个
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q2" value="D"> D. 4个
+                    </label>
+                </div>
+                <div class="feedback" id="feedback2"></div>
+                <button class="submit-btn" onclick="checkAnswer(2)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(2)">下一题</button>
+            </div>
+            
+            <div class="question" id="question3" style="display: none;">
+                <h3>3. 以下哪个不是天宫空间站的组成部分？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q3" value="A"> A. 问天实验舱
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="B"> B. 天舟货运飞船
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="C"> C. 嫦娥探测器
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q3" value="D"> D. 神舟飞船
+                    </label>
+                </div>
+                <div class="feedback" id="feedback3"></div>
+                <button class="submit-btn" onclick="checkAnswer(3)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(3)">下一题</button>
+            </div>
+            
+            <div class="question" id="question4" style="display: none;">
+                <h3>4. 天宫空间站主要在哪种环境下进行科学实验？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q4" value="A"> A. 高压环境
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="B"> B. 微重力环境
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="C"> C. 高温环境
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q4" value="D"> D. 强磁场环境
+                    </label>
+                </div>
+                <div class="feedback" id="feedback4"></div>
+                <button class="submit-btn" onclick="checkAnswer(4)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(4)">下一题</button>
+            </div>
+            
+            <div class="question" id="question5" style="display: none;">
+                <h3>5. 神舟飞船的主要功能是什么？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q5" value="A"> A. 运送货物到空间站
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="B"> B. 执行空间站修理任务
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="C"> C. 运送航天员往返空间站
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q5" value="D"> D. 进行太空天文观测
+                    </label>
+                </div>
+                <div class="feedback" id="feedback5"></div>
+                <button class="submit-btn" onclick="checkAnswer(5)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(5)">下一题</button>
+            </div>
+            
+            <div class="question" id="question6" style="display: none;">
+                <h3>6. 天舟货运飞船的主要任务是什么？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q6" value="A"> A. 为空间站运送补给物资
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="B"> B. 运送航天员
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="C"> C. 执行太空行走任务
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q6" value="D"> D. 进行月球探测
+                    </label>
+                </div>
+                <div class="feedback" id="feedback6"></div>
+                <button class="submit-btn" onclick="checkAnswer(6)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(6)">下一题</button>
+            </div>
+            
+            <div class="question" id="question7" style="display: none;">
+                <h3>7. 以下哪项是微重力环境下科学实验的优势？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q7" value="A"> A. 可以节省实验材料
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="B"> B. 可以制造出地球上无法制造的材料
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="C"> C. 实验速度更快
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q7" value="D"> D. 可以使用更简单的设备
+                    </label>
+                </div>
+                <div class="feedback" id="feedback7"></div>
+                <button class="submit-btn" onclick="checkAnswer(7)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(7)">下一题</button>
+            </div>
+            
+            <div class="question" id="question8" style="display: none;">
+                <h3>8. 问天实验舱主要专注于哪些领域的实验？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q8" value="A"> A. 生命科学和材料科学
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="B"> B. 天文学和宇宙学
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="C"> C. 核物理和粒子物理
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q8" value="D"> D. 地球观测和气象学
+                    </label>
+                </div>
+                <div class="feedback" id="feedback8"></div>
+                <button class="submit-btn" onclick="checkAnswer(8)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(8)">下一题</button>
+            </div>
+            
+            <div class="question" id="question9" style="display: none;">
+                <h3>9. 梦天实验舱具备什么特殊设备？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q9" value="A"> A. 空间种植系统
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="B"> B. 舱外机械臂
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="C"> C. 深空通信设备
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q9" value="D"> D. 核聚变反应堆
+                    </label>
+                </div>
+                <div class="feedback" id="feedback9"></div>
+                <button class="submit-btn" onclick="checkAnswer(9)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="nextQuestion(9)">下一题</button>
+            </div>
+            
+            <div class="question" id="question10" style="display: none;">
+                <h3>10. 天和核心舱的主要功能是什么？</h3>
+                <div class="options">
+                    <label class="option">
+                        <input type="radio" name="q10" value="A"> A. 空间站的能源中心
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="B"> B. 空间站的管理和控制中心
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="C"> C. 专门进行材料科学研究
+                    </label>
+                    <label class="option">
+                        <input type="radio" name="q10" value="D"> D. 专门进行天文观测
+                    </label>
+                </div>
+                <div class="feedback" id="feedback10"></div>
+                <button class="submit-btn" onclick="checkAnswer(10)">提交答案</button>
+                <button class="next-btn" style="display: none;" onclick="finishQuiz()">完成测验</button>
+            </div>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <h2>测验完成！</h2>
+            <div class="score" id="scoreDisplay">
+                您的得分：<span id="score">0</span>/10
+            </div>
+            <div id="certificate">
+                <p>恭喜您完成天宫空间站知识问答！</p>
+                <button class="certificate-btn" onclick="generateCertificate()">获取学习证书</button>
+            </div>
+            <div>
+                <button class="submit-btn" onclick="restartQuiz()">重新测试</button>
+                <button class="submit-btn" onclick="window.location.href='test.html'">返回空间站概览</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 答案数组
+        const correctAnswers = {
+            1: "B", // 天和核心舱
+            2: "B", // 2个（问天、梦天）
+            3: "C", // 嫦娥探测器
+            4: "B", // 微重力环境
+            5: "C", // 运送航天员
+            6: "A", // 运送补给物资
+            7: "B", // 可以制造出地球上无法制造的材料
+            8: "A", // 生命科学和材料科学
+            9: "B", // 舱外机械臂
+            10: "B" // 管理和控制中心
+        };
+        
+        // 问题解释
+        const explanations = {
+            1: "天和核心舱是中国空间站的核心舱段，是空间站的管理和控制中心。",
+            2: "天宫空间站有两个实验舱：问天实验舱和梦天实验舱。",
+            3: "嫦娥探测器是中国的月球探测器，不是天宫空间站的组成部分。天宫空间站由天和核心舱、问天实验舱、梦天实验舱组成，神舟飞船和天舟货运飞船负责运送航天员和物资。",
+            4: "天宫空间站主要在微重力环境下进行科学实验，这是地球上难以实现的特殊环境。",
+            5: "神舟飞船的主要功能是运送航天员往返于地球与空间站之间。",
+            6: "天舟货运飞船主要任务是为空间站运送补给物资、推进剂和科研设备。",
+            7: "微重力环境的一个主要优势是可以制造出地球上受重力影响无法制造的特殊材料。",
+            8: "问天实验舱主要专注于生命科学和材料科学领域的实验研究。",
+            9: "梦天实验舱配备有舱外机械臂，用于支持舱外实验和维修工作。",
+            10: "天和核心舱是空间站的管理和控制中心，负责整个空间站的运行管理。"
+        };
+        
+        let score = 0;
+        let answered = [];
+        
+        // 检查答案
+        function checkAnswer(questionNumber) {
+            // 只有未回答过的问题才处理
+            if (!answered.includes(questionNumber)) {
+                const selectedOption = document.querySelector(`input[name="q${questionNumber}"]:checked`);
+                
+                if (selectedOption) {
+                    const userAnswer = selectedOption.value;
+                    const correctAnswer = correctAnswers[questionNumber];
+                    const feedbackElement = document.getElementById(`feedback${questionNumber}`);
+                    
+                    // 显示反馈信息
+                    feedbackElement.style.display = "block";
+                    
+                    if (userAnswer === correctAnswer) {
+                        feedbackElement.innerHTML = `<p>✓ 正确！${explanations[questionNumber]}</p>`;
+                        feedbackElement.className = "feedback correct";
+                        score++;
+                    } else {
+                        feedbackElement.innerHTML = `<p>✗ 错误。正确答案是 ${correctAnswer}。${explanations[questionNumber]}</p>`;
+                        feedbackElement.className = "feedback incorrect";
+                    }
+                    
+                    // 标记选项的正确与错误
+                    const options = document.querySelectorAll(`#question${questionNumber} .option`);
+                    options.forEach(option => {
+                        const input = option.querySelector('input');
+                        if (input.value === correctAnswer) {
+                            option.classList.add('correct');
+                        } else if (input.value === userAnswer) {
+                            option.classList.add('incorrect');
+                        }
+                    });
+                    
+                    // 隐藏提交按钮，显示下一题按钮
+                    document.querySelector(`#question${questionNumber} .submit-btn`).style.display = 'none';
+                    document.querySelector(`#question${questionNumber} .next-btn`).style.display = 'inline-block';
+                    
+                    // 标记为已回答
+                    answered.push(questionNumber);
+                    
+                    // 更新进度条
+                    const progress = (answered.length / 10) * 100;
+                    document.getElementById('progress').style.width = `${progress}%`;
+                    
+                } else {
+                    alert("请选择一个答案！");
+                }
+            }
+        }
+        
+        // 切换到下一题
+        function nextQuestion(currentQuestion) {
+            document.getElementById(`question${currentQuestion}`).style.display = 'none';
+            document.getElementById(`question${currentQuestion + 1}`).style.display = 'block';
+        }
+        
+        // 完成测验
+        function finishQuiz() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('score').textContent = score;
+        }
+        
+        // 重新开始测验
+        function restartQuiz() {
+            // 重置所有状态
+            score = 0;
+            answered = [];
+            
+            // 重置进度条
+            document.getElementById('progress').style.width = '0%';
+            
+            // 隐藏结果容器
+            document.getElementById('resultContainer').style.display = 'none';
+            
+            // 重置所有问题的状态
+            for (let i = 1; i <= 10; i++) {
+                // 重置反馈
+                document.getElementById(`feedback${i}`).style.display = 'none';
+                document.getElementById(`feedback${i}`).className = 'feedback';
+                
+                // 重置选项样式
+                const options = document.querySelectorAll(`#question${i} .option`);
+                options.forEach(option => {
+                    option.classList.remove('correct', 'incorrect');
+                });
+                
+                // 重置单选按钮
+                document.querySelectorAll(`input[name="q${i}"]`).forEach(input => {
+                    input.checked = false;
+                });
+                
+                // 显示提交按钮，隐藏下一题按钮
+                document.querySelector(`#question${i} .submit-btn`).style.display = 'inline-block';
+                document.querySelector(`#question${i} .next-btn`).style.display = 'none';
+                
+                // 隐藏所有问题，只显示第一题
+                document.getElementById(`question${i}`).style.display = i === 1 ? 'block' : 'none';
+            }
+            
+            // 显示问题容器
+            document.getElementById('quizContent').style.display = 'block';
+        }
+        
+        // 生成学习证书功能（当前已禁用）
+        function generateCertificate() {
+            // 显示一个提示，告知用户证书功能尚未启用
+            alert("证书功能即将上线，敬请期待！");
+            
+            // 在此可以添加其他逻辑，例如跳转到其他页面或显示成绩统计
+            console.log("用户完成测验，得分：" + score + "/10");
+        }
+    </script>
+</body>
+</html>

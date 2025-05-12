@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>天宫空间站 - 互动虚拟漫游体验</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/ui/favicon.ico" type="image/x-icon">
+    <meta name="description" content="探索中国天宫空间站的互动虚拟漫游体验，参观天和核心舱、问天实验舱和梦天实验舱">
+    
+</head>
+<body>
+    <!-- 启动屏幕 - 用户首次访问时显示的欢迎界面 -->
+    <div class="launch-screen" id="launchScreen">
+        <div class="loading-animation"></div>
+        <h1>天宫空间站</h1>
+        <p>360°互动虚拟漫游体验</p>
+        <p>准备踏上探索中国空间站的奇妙旅程，通过这个互动体验，您将能够身临其境地参观天和核心舱、问天实验舱、梦天实验舱、神舟飞船、天舟货运飞船，了解中国航天员的工作与生活环境。</p>
+        <!-- 开始按钮，点击后直接跳转到test.html -->
+        <button class="start-btn" id="startBtn">开始探索</button>
+    </div>
+
+    <div class="virtual-tour-container">
+        <div class="tour-view" id="tourView"></div>
+        <div class="info-popup" id="infoPopup">
+            <button class="close-btn" id="closePopup">×</button>
+            <h3 id="popupTitle">信息标题</h3>
+            <div id="popupContent">
+                <p>详细信息将显示在这里...</p>
+            </div>
+        </div>
+    </div>
+    <!-- 先加载数据文件，因为main.js依赖于data.js中的数据 -->
+    <script src="js/data.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const startBtn = document.getElementById('startBtn');
+            const virtualTourContainer = document.querySelector('.virtual-tour-container');
+
+            // 初始状态下隐藏虚拟漫游界面
+            virtualTourContainer.style.display = 'none';
+            
+            // 点击开始按钮直接跳转到test.html
+            startBtn.addEventListener('click', function() {
+                window.location.href = 'test.html';
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <!-- 设置视口，确保在移动设备上正确显示 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 网页标题，显示在浏览器标签上 -->
+    <title>天宫空间站 - 神舟飞船</title>
+    <!-- 链接到CSS样式表 -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- 设置网站图标 -->
+    <link rel="icon" href="images/ui/favicon.ico" type="image/x-icon">
+    <!-- SEO描述，用于搜索引擎优化 -->
+    <meta name="description" content="探索中国天宫空间站神舟飞船的互动虚拟漫游体验，了解神舟飞船的科研设施和功能">
+    
+</head>
+<body>
+    <!-- 主虚拟漫游容器 - 包含全景图和所有交互元素 -->
+    <div class="virtual-tour-container">
+        <!-- 全景图显示区域 - 背景图片会通过JavaScript动态设置 -->
+        <div class="tour-view" id="tourView"></div>
+        
+        <!-- 交互热点会通过JavaScript动态添加到这里 -->
+        
+        <!-- 信息弹窗 - 点击热点时显示详细信息 -->
+        <div class="info-popup" id="infoPopup">
+            <!-- 关闭按钮 -->
+            <button class="close-btn" id="closePopup">×</button>
+            <!-- 弹窗标题，由JavaScript动态更新 -->
+            <h3 id="popupTitle">信息标题</h3>
+            <!-- 弹窗内容区域，由JavaScript动态更新 -->
+            <div id="popupContent">
+                <p>详细信息将显示在这里...</p>
+            </div>
+        </div>
+        
+        <!-- 导航控制 - 用于在全景图之间切换 -->
+        <div class="nav-controls">
+            <!-- 上一个全景图按钮 -->
+            <button class="nav-btn" id="prevBtn">上一个</button>
+            <!-- 下一个全景图按钮 -->
+            <button class="nav-btn" id="nextBtn">下一个</button>
+            <!-- 返回概览按钮 -->
+            <button class="nav-btn" id="returnBtn">返回概览</button>
+        </div>
+        
+        <!-- 全景导航点 - 显示当前模块中的全景图列表，由JavaScript动态生成 -->
+        <div class="panorama-nav" id="panoramaNav"></div>
+        
+        <!-- 界面覆盖层 - 包含模块选择器和信息面板 -->
+        <div class="interface-overlay">
+            <!-- 模块选择器 - 用于切换不同的空间站舱段 -->
+            <div class="overlay-element module-selector">
+                <h4>选择模块</h4>
+                <!-- 模块按钮，data-module属性用于JavaScript识别选择的模块 -->
+                <!-- active类表示当前选中的模块 -->
+                <button class="module-btn" onclick="window.location.href='tianhe.html'">天和核心舱</button>
+                <button class="module-btn" onclick="window.location.href='wentian.html'">问天实验舱</button>
+                <button class="module-btn" onclick="window.location.href='mengtian.html'">梦天实验舱</button>
+                <button class="module-btn active" data-module="shenzhou">神舟飞船</button>
+                <button class="module-btn" onclick="window.location.href='tianzhou.html'">天舟货运飞船</button>
+            </div>
+            
+            <!-- 信息面板 - 显示当前位置和描述 -->
+            <div class="overlay-element info-panel">
+                <!-- 当前位置标题 -->
+                <h4 id="currentLocation">当前位置: 神舟飞船</h4>
+                <!-- 位置描述 -->
+                <p id="locationDescription">中国空间站的重要实验舱之一，专注于微重力环境下的高端科学实验。</p>
+            </div>
+        </div>
+        
+        <!-- 梦天实验舱部分 -->
+        <div id="shenzhou" style="display: block;">
+            <h2>神舟飞船</h2>
+            <p>神舟飞船是中国空间站的重要实验舱之一，专注于微重力环境下的高端科学实验。它配备有先进的科研设备和舱外机械臂，支持进行精密的物理、光学等领域的实验。神舟飞船内的设备可帮助航天员进行量子物理、精密光学、空间物理等复杂实验，推动现代科技的发展。该实验舱还设计了多个高精度实验区域，用于开展需要高度控制环境的实验。神舟飞船的舱外平台可进行太空环境下的测试，为中国的航天技术和科学研究提供了不可或缺的支持。</p>
+        </div>
+    </div>
+
+    <!-- 脚本文件 -->
+    <!-- 先加载数据文件，因为main.js依赖于data.js中的数据 -->
+    <script src="js/data.js"></script>
+    <!-- 主要的JavaScript逻辑文件 -->
+    <script src="js/main.js"></script>
+    <!-- 页面加载相关的JavaScript代码 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const virtualTourContainer = document.querySelector('.virtual-tour-container');
+            
+            // 直接显示虚拟漫游界面
+            virtualTourContainer.style.display = 'block';
+            
+            // 关闭弹窗按钮事件
+            document.getElementById('closePopup').addEventListener('click', function() {
+                document.getElementById('infoPopup').classList.remove('active');
+            });
+            
+            // 设置当前模块为梦天实验舱
+            if (typeof currentModule !== 'undefined') {
+                    currentModule = 'shenzhou';
+                currentPanoramaIndex = 0;
+                updateView();
+            }
+            
+            // 修复上一个下一个按钮的点击事件
+            document.getElementById('prevBtn').addEventListener('click', function() {
+                if (typeof prevPanorama === 'function') {
+                    prevPanorama();
+                }
+            });
+            
+            document.getElementById('nextBtn').addEventListener('click', function() {
+                if (typeof nextPanorama === 'function') {
+                    nextPanorama();
+                }
+            });
+            
+            // 返回概览页面
+            document.getElementById('returnBtn').addEventListener('click', function() {
+                location.href = 'test.html';
+            });
+            
+            // 全屏模式逻辑
+            document.getElementById('fullscreenBtn').addEventListener('click', function() {
+                const elem = document.documentElement;
+                if (!document.fullscreenElement) {
+                    if (elem.requestFullscreen) {
+                        elem.requestFullscreen();
+                    } else if (elem.webkitRequestFullscreen) {
+                        elem.webkitRequestFullscreen();
+                    } else if (elem.msRequestFullscreen) {
+                        elem.msRequestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+<!-- 左上角导航栏 -->
+<div class="top-nav">
+    <button id="fullscreenBtn">全屏模式</button>
+    <a href="quiz.html" style="background-color: #00a8ff; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; margin-left: 15px;">知识问答</a>
+</div>
+</html>
